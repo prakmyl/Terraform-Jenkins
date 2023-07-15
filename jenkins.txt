@@ -1,6 +1,8 @@
 pipeline {
+agent any
   environment {
     MY_CRED = credentials('AzurePrinciple')
+
   }
 
   stages {
