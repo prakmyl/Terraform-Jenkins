@@ -18,7 +18,7 @@ parameters {
 
 
 
-    stages {
+ 
         stage('checkout') {
             steps {
                  script{
@@ -28,7 +28,7 @@ parameters {
                         }
                     }
                 }
-            }
+          
 
         stage('Plan') {
             steps {
