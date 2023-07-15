@@ -11,7 +11,7 @@ parameters {
     stages {
         stage('checkout') {
             steps {
-                  sh 'az login --service-principal -u $Client ID -p $Client Secret -t $Tenant ID' 
+                  sh 'az login --service-principal -u $Client ID -p $Client Secret -t $Tenant ID' }
                  script{
                         dir("terraform")
                         {
