@@ -3,13 +3,8 @@ parameters {
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
     } 
  environment {
- withCredentials([azureServicePrincipal(credentialsId: 'AzurePrinciple',
-                                    subscriptionIdVariable: 'Subscription ID',
-                                    clientIdVariable: 'Client ID',
-                                    clientSecretVariable: 'Client Secret',
-                                    tenantIdVariable: 'Tenant ID')]) {
-    sh 'az login --service-principal -u $Client ID -p $Client Secret -t $Tenant ID'
-}
+    MY_CRED = credentials('AzurePrinciple')
+  }
 }
     stages {
         stage('checkout') {
