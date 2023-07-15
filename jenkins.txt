@@ -11,7 +11,7 @@ parameters {
  stages {
     stage('build') {
       steps {
-          sh 'az login --service-principal -u $Subscription ID -p $Client Secret -t $Tenant ID'
+          sh 'az login --service-principal -u $MY_CRED -p $MY_CRED -t $MY_CRED'
       }
     }
   }
