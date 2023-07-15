@@ -19,7 +19,7 @@ parameters {
                         }
                     }
                 }
-            
+            }
 
         stage('Plan') {
             steps {
