@@ -1,6 +1,7 @@
 pipeline {
 agent any
- { withCredentials([azureServicePrincipal(credentialsId: 'credentials_id',
+ { 
+ withCredentials([azureServicePrincipal(credentialsId: 'credentials_id',
                                     subscriptionIdVariable: 'Subscription ID',
                                     clientIdVariable: 'Client ID',
                                     clientSecretVariable: 'Client Secret',
@@ -48,5 +49,5 @@ agent any
             }
         }
     }
-
+}
 
