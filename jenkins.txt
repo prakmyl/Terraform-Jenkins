@@ -4,7 +4,7 @@ parameters {
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
     } 
  environment {
-    MY_CRED = credentials('AzurePrinciple')
+    MY_CRED = credentials('AzurePrincipal')
     
   }
 
