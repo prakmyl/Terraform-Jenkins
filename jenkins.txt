@@ -5,6 +5,7 @@ parameters {
     } 
  environment {
     MY_CRED = credentials('AzurePrinciple')
+    sh 'az login --service-principal -u $Client ID -p $Client Secret -t $Tenant ID'     
   }
 
     stages {
