@@ -5,7 +5,7 @@ parameters {
  environment {
     MY_CRED = credentials('AzurePrinciple')
   }
-}
+
     stages {
         stage('checkout') {
             steps {
