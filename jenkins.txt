@@ -6,6 +6,10 @@ pipeline {
  tools {
        terraform 'terraform'
     }
+ environment {
+    MY_CRED = credentials('rubinkey')
+  }
+
     stages {
         stage('checkout') {
             steps {
