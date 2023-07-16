@@ -6,7 +6,9 @@ pipeline {
  tools {
        terraform 'terraform'
     }
-
+ environment {
+    MY_CRED = credentials('azconnect')
+  }
 
   
 
@@ -14,9 +16,7 @@ pipeline {
         stage('checkout') {
             steps {
                  script{
-                   withCredentials([azureServicePrincipal('azconnect')]) {
-    sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
-}
+                   sh 'az login --service-principal -u $MY_CRED_CLIENT_ID -p $MY_CRED_CLIENT_SECRET -t $MY_CRED_TENANT_ID'
                         dir("terraform")
                         {
                             git "https://github.com/prakmyl/Terraform-Jenkins.git"
