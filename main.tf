@@ -109,7 +109,7 @@ resource "azurerm_linux_virtual_machine" "prk-vm" {
 
   admin_ssh_key {
     username   = "adminuser"
-    key_data = "${file("~/.ssh/id_rsa.pub")}"
+    identityfile = "${file("~/.ssh/id_rsa.pub")}"
     
   }
 
