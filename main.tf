@@ -8,9 +8,10 @@ terraform {
 }
 
 # Configure the Microsoft Azure Provider
-#provider "azurerm" {
-  # features {}
-#}
+provider "azurerm" {
+   features {}
+TF_IN_AUTOMATION = true 
+}
 
 
 resource "azurerm_resource_group" "prk-rsrc" {
