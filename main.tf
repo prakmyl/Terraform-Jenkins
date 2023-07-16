@@ -109,7 +109,9 @@ resource "azurerm_linux_virtual_machine" "prk-vm" {
 
   admin_ssh_key {
     username   = "adminuser"
-    public_key = file("~/.ssh/prkazurekey.pub")
+     path     = "/home/adminuser/.ssh/authorized_keys"
+     key_data = "${file("~/.ssh/id_rsa.pub")}"
+    
   }
 
 
