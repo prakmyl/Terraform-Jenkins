@@ -1,4 +1,3 @@
-variable "MY_CRED_CLIENT_SECRET" {}
 
 terraform {
   required_providers {
