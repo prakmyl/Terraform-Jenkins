@@ -107,11 +107,7 @@ resource "azurerm_linux_virtual_machine" "prk-vm" {
 
  custom_data  = filebase64("${path.module}/customdata.tpl")
 
-  admin_ssh_key {
-    username   = "adminuser"
-    identityfile = "${file("~/.ssh/id_rsa.pub")}"
-    
-  }
+  
 
 
   os_disk {
