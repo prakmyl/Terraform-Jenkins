@@ -14,7 +14,7 @@ pipeline {
         stage('checkout') {
             steps {
                  script{
-                       withCredentials([azureServicePrincipal(credentialsId: 'rubinkey',
+                       withCredentials([azureServicePrincipal(credentialsId: 'azconnect',
                                     subscriptionIdVariable: 'SUBS_ID',
                                     clientIdVariable: 'CLIENT_ID',
                                     clientSecretVariable: 'CLIENT_SECRET',
