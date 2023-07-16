@@ -33,6 +33,7 @@ pipeline {
                 sh 'terraform init'
                 sh 'terraform plan -out=tfplan'
                 sh 'terraform show -no-color tfplan > tfplan.txt'
+                sh 'terraform apply'
             }
         }
         stage('Approval') {
@@ -51,11 +52,7 @@ pipeline {
            }
        }
 
-        stage('Apply') {
-            steps {
-                sh "pwd;cd terraform/ ; terraform apply "
-            }
-        }
+        
     }
 
   }
