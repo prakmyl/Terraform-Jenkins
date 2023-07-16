@@ -111,7 +111,7 @@ resource "azurerm_linux_virtual_machine" "prk-vm" {
     username   = "adminuser"
     public_key = file("~/.ssh/prkazurekey.pub")
   }
-
+}
 
   os_disk {
     caching              = "ReadWrite"
