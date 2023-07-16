@@ -7,8 +7,9 @@ pipeline {
        terraform 'terraform'
     }
  environment {
-    MY_CRED = credentials('rubinkey')
-    sh 'az login --service-principal -u $MY_CRED_CLIENT_ID -p $MY_CRED_CLIENT_SECRET -t $MY_CRED_TENANT_ID'
+   withCredentials([azureServicePrincipal('rubinkey)]) {
+    sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
+}
   }
 
     stages {
