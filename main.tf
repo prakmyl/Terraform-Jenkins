@@ -103,7 +103,7 @@ resource "azurerm_linux_virtual_machine" "prk-vm" {
   #admin_password                  = "root@123"
   #disable_password_authentication = "false"
   network_interface_ids = [ azurerm_network_interface.prk-nic.id ]
-  instance_count = 2
+ 
 
  custom_data  = filebase64("${path.module}/customdata.tpl")
 
