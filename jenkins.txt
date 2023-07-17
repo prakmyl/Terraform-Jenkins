@@ -27,7 +27,11 @@ pipeline {
         stage('Plan') {
             echo "Hi"
             steps {
-                withCredentials([usernamePassword(credentialsId: 'azconnect', passwordVariable: 'AZURE_CLIENT_SECRET', usernameVariable: 'AZURE_CLIENT_ID')]) {
+               withCredentials([azureServicePrincipal(credentialsId: 'azconnect',
+                                    subscriptionIdVariable: 'SUBS_ID',
+                                    clientIdVariable: 'CLIENT_ID',
+                                    clientSecretVariable: 'CLIENT_SECRET',
+                                    tenantIdVariable: 'TENANT_ID')])  {
                     
                     sh 'export TF_VAR_clientid=$AZURE_CLIENT_ID'
                     sh 'export TF_VAR_clientsecret=$AZURE_CLIENT_SECRET'
