@@ -33,10 +33,10 @@ pipeline {
                                     clientSecretVariable: 'CLIENT_SECRET',
                                     tenantIdVariable: 'TENANT_ID')])  {
                     
-                    sh 'export TF_VAR_clientid=$AZURE_CLIENT_ID'
-                    sh 'export TF_VAR_clientsecret=$AZURE_CLIENT_SECRET'
-                    sh 'export TF_VAR_subscriptionid=$AZURE_SUBSCRIPTION_ID'
-                    sh 'export TF_VAR_tenantid=$AZURE_TENANT_ID'
+                    sh 'export TF_VAR_clientid=$SUBS_ID'
+                    sh 'export TF_VAR_clientsecret=$CLIENT_ID'
+                    sh 'export TF_VAR_subscriptionid=$CLIENT_SECRET'
+                    sh 'export TF_VAR_tenantid=$TENANT_ID'
 
                 sh 'terraform init'
                 sh 'terraform plan -out=tfplan'
