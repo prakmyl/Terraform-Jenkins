@@ -1,4 +1,5 @@
-
+variable "clientsecret" {
+}
 terraform {
   required_providers {
     azurerm = {
@@ -10,10 +11,10 @@ terraform {
 
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
-  client_id       = var.clientid
+  client_id       = "1e6a9095-67a4-4c91-b9f1-977ff15bc6e2"
   client_secret   = var.clientsecret
-  subscription_id = var.subscriptionid
-  tenant_id       = var.tenantid
+  subscription_id = "d194ddbd-6fc2-4bef-9091-802f670db6e3"
+  tenant_id       = "27e7b34a-dacc-4659-8997-a9553f9be9db"
   features {}
  
 }
