@@ -10,8 +10,12 @@ terraform {
 
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
+  client_id       = var.clientid
+  client_secret   = var.clientsecret
+  subscription_id = var.subscriptionid
+  tenant_id       = var.tenantid
   features {}
-  MY_CRED = credentials('azconnect')
+ 
 }
 
 
