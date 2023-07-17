@@ -37,7 +37,7 @@ pipeline {
                     env.TF_VAR_clientid= env.AZURE_SUBSCRIPTION_ID
                     env.TF_VAR_clientsecret=env.AZURE_CLIENT_SECRET
                     env.TF_VAR_subscriptionid= env.AZURE_SUBSCRIPTION_ID
-                    env.TF_VAR_tenantid=env.AZURE_TENANT_ID"
+                    env.TF_VAR_tenantid=env.AZURE_TENANT_ID
 
                 sh 'terraform init'
                 sh 'terraform plan -out=tfplan'
