@@ -1,77 +1,109 @@
-pipeline {
-    agent  any
- parameters {
-        booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
-    } 
- tools {
-       terraform 'terraform'
+pipeline{
+    agent any 
+    tools {
+        "org.jenkinsci.plugins.terraform.TerraformInstallation" "terraform"
     }
- 
-  stages {
-  
-
-
-  
-        stage('checkout') {
-            steps {
-                 script{
-                   
-                        dir("terraform")
-                        {
-                            git "https://github.com/prakmyl/Terraform-Jenkins.git"
-                        }
-                    }
-                }
-            }
-
-        stage('Plan') {
+    environment {
+        TF_HOME = tool('terraform')
+        TF_IN_AUTOMATION = "true"
+        PATH = "$TF_HOME:$PATH"
+    }
+    stages {
+    
+        stage('Terraform Init'){
             
             steps {
-                script{
-               withCredentials([azureServicePrincipal(credentialsId: 'azconnect',
-                                    subscriptionIdVariable: 'TF_VAR_clientid',
-                                    clientIdVariable: 'TF_VAR_clientsecret',
-                                    clientSecretVariable: 'TF_VAR_subscriptionid',
-                                    tenantIdVariable: 'TF_VAR_tenantid')])  {
-                    
-                    env.TF_VAR_clientid= env.AZURE_SUBSCRIPTION_ID
-                    env.TF_VAR_clientsecret=env.AZURE_CLIENT_SECRET
-                    env.TF_VAR_subscriptionid= env.AZURE_SUBSCRIPTION_ID
-                    env.TF_VAR_tenantid=env.AZURE_TENANT_ID
-
-                sh 'terraform init'
-                sh 'terraform plan -out=tfplan'
-                sh 'terraform show -no-color tfplan > tfplan.txt'
-                
-            }
+                    ansiColor('xterm') {
+                    withCredentials([azureServicePrincipal(
+                    credentialsId: 'Jenkins',
+                    subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
+                    clientIdVariable: 'ARM_CLIENT_ID',
+                    clientSecretVariable: 'ARM_CLIENT_SECRET',
+                    tenantIdVariable: 'ARM_TENANT_ID'
+                ), string(credentialsId: 'azconnect', variable: 'ARM_azconnect')]) {
+                        
+                        sh """
+                                
+                        echo "Initialising Terraform"
+                        terraform init -backend-config="azconnect=$ARM_azconnect"
+                        """
+                           }
+                    }
+             }
         }
-}
-}
-      
 
-        stage('Approval') {
-           when {
-               not {
-                   equals expected: true, actual: params.autoApprove
-               }
-           }
-
-           steps {
-               script {
-                    def plan = readFile 'terraform/tfplan.txt'
-                    input message: "Do you want to apply the plan?",
-                    parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
-               }
-           }
-       }
-
-        stage('Apply') {
+        stage('Terraform Validate'){
+            
             steps {
-                sh 'terraform apply -input=false tfplan'
+                    ansiColor('xterm') {
+                    withCredentials([azureServicePrincipal(
+                    credentialsId: 'Jenkins',
+                    subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
+                    clientIdVariable: 'ARM_CLIENT_ID',
+                    clientSecretVariable: 'ARM_CLIENT_SECRET',
+                    tenantIdVariable: 'ARM_TENANT_ID'
+                ), string(credentialsId: 'azconnect', variable: 'ARM_azconnect')]) {
+                        
+                        sh """
+                                
+                        terraform validate
+                        """
+                           }
+                    }
+             }
+        }
+
+        stage('Terraform Plan'){
+            steps {
+
+                    ansiColor('xterm') {
+                    withCredentials([azureServicePrincipal(
+                    credentialsId: 'Jenkins',
+                    subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
+                    clientIdVariable: 'ARM_CLIENT_ID',
+                    clientSecretVariable: 'ARM_CLIENT_SECRET',
+                    tenantIdVariable: 'ARM_TENANT_ID'
+                ), string(credentialsId: 'azconnect', variable: 'ARM_azconnect')]) {
+                        
+                        sh """
+                        
+                        echo "Creating Terraform Plan"
+                        terraform plan -var "client_id=$ARM_CLIENT_ID" -var "client_secret=$ARM_CLIENT_SECRET" -var "subscription_id=$ARM_SUBSCRIPTION_ID" -var "tenant_id=$ARM_TENANT_ID"
+                        """
+                        }
+                }
             }
         }
+
+        stage('Waiting for Approval'){
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    input (message: "Deploy the infrastructure?")
+                }
+            }
         
+        }
+    
+
+        stage('Terraform Apply'){
+            steps {
+                    ansiColor('xterm') {
+                    withCredentials([azureServicePrincipal(
+                    credentialsId: 'Jenkins',
+                    subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
+                    clientIdVariable: 'ARM_CLIENT_ID',
+                    clientSecretVariable: 'ARM_CLIENT_SECRET',
+                    tenantIdVariable: 'ARM_TENANT_ID'
+                ), string(credentialsId: 'azconnect', variable: 'ARM_azconnect')]) {
+
+                        sh """
+                        echo "Applying the plan"
+                        terraform apply -auto-approve -var "client_id=$ARM_CLIENT_ID" -var "client_secret=$ARM_CLIENT_SECRET" -var "subscription_id=$ARM_SUBSCRIPTION_ID" -var "tenant_id=$ARM_TENANT_ID"
+                        """
+                                }
+                }
+            }
+        }
+
     }
-
-  }
-
+}
