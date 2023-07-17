@@ -27,16 +27,17 @@ pipeline {
         stage('Plan') {
             
             steps {
+                script{
                withCredentials([azureServicePrincipal(credentialsId: 'azconnect',
-                                    subscriptionIdVariable: 'SUBS_ID',
-                                    clientIdVariable: 'CLIENT_ID',
-                                    clientSecretVariable: 'CLIENT_SECRET',
-                                    tenantIdVariable: 'TENANT_ID')])  {
+                                    subscriptionIdVariable: 'TF_VAR_clientid',
+                                    clientIdVariable: 'TF_VAR_clientsecret',
+                                    clientSecretVariable: 'TF_VAR_subscriptionid',
+                                    tenantIdVariable: 'TF_VAR_tenantid')])  {
                     
-                    sh 'export TF_VAR_clientid=$SUBS_ID'
-                    sh 'export TF_VAR_clientsecret=$CLIENT_ID'
-                    sh 'export TF_VAR_subscriptionid=$CLIENT_SECRET'
-                    sh 'export TF_VAR_tenantid=$TENANT_ID'
+                    env.TF_VAR_clientid= env.AZURE_SUBSCRIPTION_ID
+                    env.TF_VAR_clientsecret=env.AZURE_CLIENT_SECRET
+                    env.TF_VAR_subscriptionid= env.AZURE_SUBSCRIPTION_ID
+                    env.TF_VAR_tenantid=env.AZURE_TENANT_ID"
 
                 sh 'terraform init'
                 sh 'terraform plan -out=tfplan'
@@ -44,6 +45,7 @@ pipeline {
                 sh 'terraform apply'
             }
         }
+}
 }
         stage ("terraform Action") {
             steps {
