@@ -25,7 +25,7 @@ pipeline {
             }
 
         stage('Plan') {
-            echo "Hi"
+            
             steps {
                withCredentials([azureServicePrincipal(credentialsId: 'azconnect',
                                     subscriptionIdVariable: 'SUBS_ID',
