@@ -39,6 +39,7 @@ pipeline {
                 sh 'terraform apply'
             }
         }
+}
         stage ("terraform Action") {
             steps {
                 echo "Terraform action is --> ${action}"
