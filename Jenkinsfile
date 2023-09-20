@@ -13,8 +13,7 @@ pipeline {
         stage('checkout') {
             steps {
                  script{
-                        dir("terraform")
-                        {
+                         {
                             git "https://github.com/prakmyl/Terraform-Jenkins.git"
                         }
                     }
@@ -24,8 +23,8 @@ pipeline {
         stage('Plan') {
             steps {
                 sh 'terraform init'
-                sh "terraform plan -out tfplan"
-                sh 'terraform show -no-color tfplan > tfplan.txt'
+                sh "terraform plan"
+                
             }
         }
         stage('Approval') {
@@ -35,14 +34,7 @@ pipeline {
                }
            }
 
-           steps {
-               script {
-                    def plan = readFile 'terraform/tfplan.txt'
-                    input message: "Do you want to apply the plan?",
-                    parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
-               }
-           }
-       }
+        }
 
         stage('Apply') {
             steps {
