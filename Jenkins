@@ -15,7 +15,7 @@ ipeline {
                  script{
                         dir("terraform")
                         {
-                            https://github.com/prakmyl/Terraform-Jenkins.git"
+                            git "https://github.com/prakmyl/Terraform-Jenkins.git"
                         }
                     }
                 }
