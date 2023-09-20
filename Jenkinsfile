@@ -17,7 +17,7 @@ pipeline {
                        
                     }
                 }
-            }
+            
 
         stage('Plan') {
             steps {
@@ -41,5 +41,6 @@ pipeline {
             }
         }
     }
+}
 
   
