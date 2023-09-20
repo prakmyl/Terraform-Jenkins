@@ -13,9 +13,8 @@ pipeline {
         stage('checkout') {
             steps {
              
-                         {
                             git "https://github.com/prakmyl/Terraform-Jenkins.git"
-                          }
+                       
                     }
                 }
             }
